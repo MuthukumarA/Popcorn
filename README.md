@@ -41,6 +41,7 @@ At this time, only Windows 7+ is supported (Windows 7, 8, 8.1, 10 | 32/64 Bits).
 Of course yes! Any pull-request will be considered.
 
 ## Tasks
+- [ ] Fork the repo and make it universal (UWP)
 - [ ] Subtitles support
 - [ ] Seekable movie stream
 - [ ] In-memory movie downloading
