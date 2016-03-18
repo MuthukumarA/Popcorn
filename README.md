@@ -31,7 +31,7 @@ An application which aims to provide a simple interface to watch any movie.
 * Localization: [WpfLocalizeExtension](https://github.com/SeriousM/WPFLocalizationExtension)
 
 ### API
-* Movies' torrent source from [YTS](http://yts.to)
+* Movies' torrent source from [YTS](http://yts.ag)
 * Movies' data from [TMDb](http://tmdb.org)
 
 ## Supported platforms
