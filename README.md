@@ -12,12 +12,12 @@ An application which aims to provide a simple interface to watch any movie.
 ![Screenshot3](https://cloud.githubusercontent.com/assets/8962802/9288481/dee26ee4-4348-11e5-972e-b7609bd07ca8.jpg)
 
 ## What does it use?
-.NET Framework 4.6 and C# for the backend. WPF/XAML for the interface.
+.NET Framework 4.6.2 and C# for the backend. WPF/XAML for the interface.
 
 ### Dependencies
 * MVVM framework: [MVVM Light](https://mvvmlight.codeplex.com) 
 * UI framework: [MahApps](https://github.com/MahApps/MahApps.Metro)
-* .NET VLC wrapper: [xZune.Vlc](https://github.com/higankanshi/xZune.Vlc)
+* Media Player: [FFME](https://github.com/unosquare/ffmediaelement)
 * Libtorrent wrapper: [libtorrent-net](https://github.com/higankanshi/xZune.Vlc)
 * ORM: [Entity Framework](https://github.com/aspnet/EntityFramework)
 * Database storage: [SqlServer Compact](https://www.nuget.org/packages/Microsoft.SqlServer.Compact/)
@@ -70,4 +70,4 @@ CI is hosted on [Appveyor](https://ci.appveyor.com/project/bbougot/popcorn).
 The solution is built using Visual Studio 2015.
 
 ## Installer
-Download full installer [here](https://github.com/bbougot/Popcorn/releases/download/1.0.13/Setup.exe)
+Download full installer [here](https://github.com/bbougot/Popcorn/releases/download/1.1.0/Setup.exe)
