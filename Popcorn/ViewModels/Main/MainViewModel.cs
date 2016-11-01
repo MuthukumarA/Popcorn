@@ -373,7 +373,24 @@ namespace Popcorn.ViewModels.Main
 
                 if (!Directory.Exists(Constants.MovieDownloads)) return;
                 foreach (
-                    var filePath in Directory.GetFiles(Constants.MovieDownloads, "*.*", SearchOption.AllDirectories)
+                    var filePath in Directory.GetDirectories(Constants.MovieDownloads)
+                    )
+                {
+                    try
+                    {
+                        Logger.Debug(
+                            $"Deleting directory: {filePath}");
+                        Directory.Delete(filePath, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error($"Error while deleting directory: {ex.Message}.");
+                    }
+                }
+
+                if (!Directory.Exists(Constants.TorrentDownloads)) return;
+                foreach (
+                    var filePath in Directory.GetFiles(Constants.TorrentDownloads, "*.*", SearchOption.AllDirectories)
                     )
                 {
                     try
