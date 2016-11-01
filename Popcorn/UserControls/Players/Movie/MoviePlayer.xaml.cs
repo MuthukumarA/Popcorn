@@ -19,8 +19,9 @@ namespace Popcorn.UserControls.Players.Movie
         /// <summary>
         /// Identifies the <see cref="Volume" /> dependency property.
         /// </summary>
-        internal static readonly DependencyProperty VolumeProperty = DependencyProperty.Register("Volume", typeof (int),
-            typeof (MoviePlayer), new PropertyMetadata(100, OnVolumeChanged));
+        internal static readonly DependencyProperty VolumeProperty = DependencyProperty.Register("Volume",
+            typeof(double),
+            typeof(MoviePlayer), new PropertyMetadata(0.5, OnVolumeChanged));
 
         private bool _isMouseActivityCaptured;
 
@@ -37,9 +38,9 @@ namespace Popcorn.UserControls.Players.Movie
         /// <summary>
         /// Get or set the media volume
         /// </summary>
-        public int Volume
+        public double Volume
         {
-            get { return (int) GetValue(VolumeProperty); }
+            get { return (double) GetValue(VolumeProperty); }
 
             set { SetValue(VolumeProperty, value); }
         }
@@ -78,12 +79,12 @@ namespace Popcorn.UserControls.Players.Movie
             InputManager.Current.PreProcessInput += OnActivity;
 
             vm.StoppedPlayingMedia += OnStoppedPlayingMedia;
-            Player.VlcMediaPlayer.EndReached += MediaPlayerEndReached;
+            Player.MediaEnded += MediaPlayerEndReached;
 
-            if (!string.IsNullOrEmpty(vm.Movie.SelectedSubtitle?.FilePath))
-                Player.AddOption("--sub-file = " + vm.Movie.SelectedSubtitle.FilePath);
+            //if (!string.IsNullOrEmpty(vm.Movie.SelectedSubtitle?.FilePath))
+            //TODO: subtitles
 
-            Player.LoadMedia(vm.Movie.FilePath);
+            Player.Source = vm.Movie.FilePath;
             PlayMedia();
         }
 
@@ -98,7 +99,7 @@ namespace Popcorn.UserControls.Players.Movie
             if (moviePlayer == null)
                 return;
 
-            var newVolume = (int) e.NewValue;
+            var newVolume = (double) e.NewValue;
             moviePlayer.ChangeMediaVolume(newVolume);
         }
 
@@ -106,7 +107,7 @@ namespace Popcorn.UserControls.Players.Movie
         /// Change the media's volume
         /// </summary>
         /// <param name="newValue">New volume value</param>
-        private void ChangeMediaVolume(int newValue) => Player.Volume = newValue;
+        private void ChangeMediaVolume(double newValue) => Player.Volume = newValue;
 
         /// <summary>
         /// When user uses the mousewheel, update the volume
@@ -115,8 +116,8 @@ namespace Popcorn.UserControls.Players.Movie
         /// <param name="e">MouseWheelEventArgs</param>
         private void MouseWheelMediaPlayer(object sender, MouseWheelEventArgs e)
         {
-            if ((Volume <= 190 && e.Delta > 0) || (Volume >= 10 && e.Delta < 0))
-                Volume += (e.Delta > 0) ? 10 : -10;
+            if ((Volume <= 1 && e.Delta > 0) || (Volume >= 0 && e.Delta < 0))
+                Volume += (e.Delta > 0) ? 0.1 : -0.1;
         }
 
         /// <summary>
@@ -151,7 +152,7 @@ namespace Popcorn.UserControls.Players.Movie
         /// </summary>
         private void PauseMedia()
         {
-            Player.PauseOrResume();
+            Player.Pause();
             MediaPlayerIsPlaying = false;
 
             MediaPlayerStatusBarItemPlay.Visibility = Visibility.Visible;
@@ -174,8 +175,8 @@ namespace Popcorn.UserControls.Players.Movie
         {
             if ((Player == null) || (UserIsDraggingMediaPlayerSlider)) return;
             MediaPlayerSliderProgress.Minimum = 0;
-            MediaPlayerSliderProgress.Maximum = Player.Length.TotalSeconds;
-            MediaPlayerSliderProgress.Value = Player.Time.TotalSeconds;
+            MediaPlayerSliderProgress.Maximum = Player.NaturalDuration;
+            MediaPlayerSliderProgress.Value = decimal.ToDouble(Player.Position);
         }
 
         /// <summary>
@@ -225,10 +226,12 @@ namespace Popcorn.UserControls.Players.Movie
         /// </summary>
         /// <param name="sender">Sender object</param>
         /// <param name="e">DragCompletedEventArgs</param>
-        private void MediaSliderProgressDragCompleted(object sender, DragCompletedEventArgs e)
+        private async void MediaSliderProgressDragCompleted(object sender, DragCompletedEventArgs e)
         {
             UserIsDraggingMediaPlayerSlider = false;
-            Player.Time = TimeSpan.FromSeconds(MediaPlayerSliderProgress.Value);
+            Player.Position = (decimal) MediaPlayerSliderProgress.Value;
+            await Task.Delay(1000);
+            PlayMedia();
         }
 
         /// <summary>
@@ -241,7 +244,7 @@ namespace Popcorn.UserControls.Players.Movie
             MoviePlayerTextProgressStatus.Text =
                 TimeSpan.FromSeconds(MediaPlayerSliderProgress.Value)
                     .ToString(@"hh\:mm\:ss", CultureInfo.CurrentCulture) + " / " +
-                TimeSpan.FromSeconds(Player.Length.TotalSeconds)
+                TimeSpan.FromSeconds(Player.NaturalDuration)
                     .ToString(@"hh\:mm\:ss", CultureInfo.CurrentCulture);
         }
 
@@ -352,26 +355,20 @@ namespace Popcorn.UserControls.Players.Movie
 
             InputManager.Current.PreProcessInput -= OnActivity;
 
-            Player.VlcMediaPlayer.EndReached -= MediaPlayerEndReached;
+            Player.MediaEnded -= MediaPlayerEndReached;
             MediaPlayerIsPlaying = false;
+            Player.Stop();
+            Player.Close();
+            Player.Dispose();
 
-            Task.Run(() =>
-            {
-                Player.Stop();
-                //Player.Dispose();
+            var vm = DataContext as MoviePlayerViewModel;
+            if (vm != null)
+                vm.StoppedPlayingMedia -= OnStoppedPlayingMedia;
 
-                DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                {
-                    var vm = DataContext as MoviePlayerViewModel;
-                    if (vm != null)
-                        vm.StoppedPlayingMedia -= OnStoppedPlayingMedia;
+            Disposed = true;
 
-                    Disposed = true;
-
-                    if (disposing)
-                        GC.SuppressFinalize(this);
-                });
-            });
+            if (disposing)
+                GC.SuppressFinalize(this);
         }
     }
 }

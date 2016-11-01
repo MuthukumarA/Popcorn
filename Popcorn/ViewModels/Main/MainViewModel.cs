@@ -358,7 +358,11 @@ namespace Popcorn.ViewModels.Main
                     SelectedTab = seenTab;
             });
 
-            CloseMoviePageCommand = new RelayCommand(() => Messenger.Default.Send(new StopPlayingTrailerMessage()));
+            CloseMoviePageCommand = new RelayCommand(() =>
+            {
+                Messenger.Default.Send(new StopPlayingTrailerMessage());
+                IsMovieFlyoutOpen = false;
+            });
 
             MainWindowClosingCommand = new RelayCommand(() =>
             {
@@ -390,9 +394,7 @@ namespace Popcorn.ViewModels.Main
             InitializeAsyncCommand = new RelayCommand(async () =>
             {
                 await LoadTabsAsync();
-#if !DEBUG
                 await StartUpdateProcessAsync();
-#endif
             });
         }
 
@@ -490,10 +492,6 @@ namespace Popcorn.ViewModels.Main
                 "Looking for updates...");
             try
             {
-                SquirrelAwareApp.HandleEvents(v => _updateManager.CreateShortcutForThisExe(),
-                    v => _updateManager.CreateShortcutForThisExe(),
-                    onAppUninstall: v => _updateManager.RemoveShortcutForThisExe());
-
                 var updateInfo = await _updateManager.CheckForUpdate();
                 if (updateInfo == null)
                 {

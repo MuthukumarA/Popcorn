@@ -43,34 +43,35 @@ Temporary Items
 .apdisk
 
 # Nuget Packages
-packages/AutoFixture.3.34.0
-packages/AutoFixture.NUnit2.3.34.0
+packages/AutoFixture.3.50.2
+packages/AutoFixture.NUnit2.3.50.2
 packages/CommonServiceLocator.1.3
-packages/DeltaCompressionDotNet.1.0.0
-packages/Microsoft.Web.Xdt.2.1.1
-packages/Mono.Cecil.0.9.6.1
-packages/MvvmLight.5.2.0.0
-packages/MvvmLightLibs.5.2.0.0
-packages/Newtonsoft.Json.8.0.2
-packages/Nuget.Core.2.8.6
-packages/NUnit.2.6.4
+packages/DeltaCompressionDotNet.1.1.0
+packages/Microsoft.Win32.Primitives.4.0.1
+packages/Mono.Cecil.0.9.6.4
+packages/MvvmLight.5.3.0.0
+packages/MvvmLightLibs.5.3.0.0
+packages/Newtonsoft.Json.9.0.1
+packages/NUnit.3.5.0
 packages/RestSharp.105.2.3
 packages/Splat.1.6.2
-packages/squirrel.windows.1.2.3
-packages/TMDbLib.0.8.3
-packages/YoutubeExtractor.0.10.10
+packages/squirrel.windows.1.4.4
+packages/TMDbLib.1.0.0
+packages/YoutubeExtractor.0.10.11
 packages/EntityFramework.6.1.3
-packages/repositories.config
+packages/System.Diagnostics.DiagnosticSource.4.0.0
 packages/EntityFramework.SqlServerCompact.6.1.3
 packages/Microsoft.SqlServer.Compact.4.0.8876.1
 packages/WpfLocalizeExtension.2.3.2
-packages/XAMLMarkupExtensions.1.2.1.4
-packages/NLog.4.2.3
-packages/xZune.Vlc.16.01.17
-packages/xZune.Vlc.Wpf.16.01.17
-packages/xZune.Vlc.Lib.15.11.24
-packages/MahApps.Metro.1.2.4.0
-packages/MahApps.Metro.Resources.0.4.0.0
+packages/XAMLMarkupExtensions.1.2.2
+packages/NLog.4.3.10
+packages/MahApps.Metro.1.3.0
+packages/MahApps.Metro.Resources.0.6.1.0
+packages/System.Net.Http.4.1.0
+packages/System.Security.Cryptography.Algorithms.4.2.0
+packages/System.Security.Cryptography.Encoding.4.0.0
+packages/System.Security.Cryptography.Primitives.4.0.0
+packages/System.Security.Cryptography.X509Certificates.4.1.0
 
 # Bin and obj
 Popcorn/Bin

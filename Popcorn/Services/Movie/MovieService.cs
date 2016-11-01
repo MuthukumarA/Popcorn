@@ -38,8 +38,7 @@ namespace Popcorn.Services.Movie
         {
             TmdbClient = new TMDbClient(Constants.TmDbClientId)
             {
-                MaxRetryCount = 10,
-                RetryWaitTimeInSeconds = 1
+                MaxRetryCount = 10
             };
         }
 
@@ -67,10 +66,10 @@ namespace Popcorn.Services.Movie
 
             try
             {
-                await Task.Run(() =>
+                await Task.Run(async () =>
                 {
-                    var englishGenre = TmdbClient.GetMovieGenres(new EnglishLanguage().Culture);
-                    genres.AddRange(TmdbClient.GetMovieGenres().Select(genre => new MovieGenre
+                    var englishGenre = await TmdbClient.GetMovieGenresAsync(new EnglishLanguage().Culture);
+                    genres.AddRange((await TmdbClient.GetMovieGenresAsync()).Select(genre => new MovieGenre
                     {
                         EnglishName = englishGenre.FirstOrDefault(p => p.Id == genre.Id)?.Name,
                         TmdbGenre = genre
@@ -394,9 +393,9 @@ namespace Popcorn.Services.Movie
                 if (response.ErrorException != null)
                     throw response.ErrorException;
 
-                await Task.Run(() =>
+                await Task.Run(async () =>
                 {
-                    var tmdbInfos = TmdbClient.GetMovie(response.Data.Data.Movie.ImdbCode,
+                    var tmdbInfos = await TmdbClient.GetMovieAsync(response.Data.Data.Movie.ImdbCode,
                         MovieMethods.Credits);
 
                     movie = new MovieFull
@@ -467,9 +466,9 @@ namespace Popcorn.Services.Movie
 
             try
             {
-                await Task.Run(() =>
+                await Task.Run(async () =>
                 {
-                    var movie = TmdbClient.GetMovie(movieToTranslate.ImdbCode,
+                    var movie = await TmdbClient.GetMovieAsync(movieToTranslate.ImdbCode,
                         MovieMethods.Credits);
                     movieToTranslate.Title = movie?.Title;
                     movieToTranslate.Genres = movie?.Genres?.Select(a => a.Name).ToList();
@@ -507,9 +506,9 @@ namespace Popcorn.Services.Movie
 
             try
             {
-                await Task.Run(() =>
+                await Task.Run(async () =>
                 {
-                    var movie = TmdbClient.GetMovie(movieToTranslate.ImdbCode,
+                    var movie = await TmdbClient.GetMovieAsync(movieToTranslate.ImdbCode,
                         MovieMethods.Credits);
                     movieToTranslate.Title = movie?.Title;
                     movieToTranslate.Genres = movie?.Genres?.Select(a => a.Name).ToList();
@@ -549,7 +548,7 @@ namespace Popcorn.Services.Movie
             var trailers = new ResultContainer<Video>();
             try
             {
-                await Task.Run(() => trailers = TmdbClient.GetMovie(movie.ImdbCode, MovieMethods.Videos)?.Videos, ct);
+                await Task.Run(async () => trailers = (await TmdbClient.GetMovieAsync(movie.ImdbCode, MovieMethods.Videos))?.Videos, ct);
             }
             catch (Exception exception) when (exception is TaskCanceledException)
             {
@@ -720,7 +719,7 @@ namespace Popcorn.Services.Movie
                 await Task.Run(async () =>
                 {
                     TmdbClient.GetConfig();
-                    var tmdbMovie = TmdbClient.GetMovie(movie.ImdbCode, MovieMethods.Images);
+                    var tmdbMovie = await TmdbClient.GetMovieAsync(movie.ImdbCode, MovieMethods.Images);
                     var remotePath = new List<string>
                     {
                         TmdbClient.GetImageUrl(Constants.BackgroundImageSizeTmDb,
