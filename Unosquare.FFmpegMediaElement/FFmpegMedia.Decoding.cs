@@ -448,7 +448,7 @@
                     if (decodeResult < Constants.SuccessCode)
                     {
                         var errorMessage = Helper.GetFFmpegErrorMessage(decodeResult);
-                        throw new Exception(string.Format("Error decoding video packet. Code {0} - {1}", decodeResult, errorMessage));
+                        break;
                     }
                     else
                     {

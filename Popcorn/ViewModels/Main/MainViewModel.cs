@@ -411,7 +411,9 @@ namespace Popcorn.ViewModels.Main
             InitializeAsyncCommand = new RelayCommand(async () =>
             {
                 await LoadTabsAsync();
+#if !DEBUG
                 await StartUpdateProcessAsync();
+#endif
             });
         }
 

@@ -39,11 +39,13 @@ namespace Popcorn
             Logger.Info(
                 $"Popcorn started in {elapsedStartMs} milliseconds.");
 
+#if !DEBUG
             SquirrelAwareApp.HandleEvents(
                 onInitialInstall: OnInitialInstall,
                 onAppUpdate: OnAppUpdate,
                 onAppUninstall: OnAppUninstall,
                 onFirstRun: OnFirstRun);
+#endif
         }
 
         /// <summary>
