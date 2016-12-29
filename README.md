@@ -57,7 +57,6 @@ Of course yes! Any pull-request will be considered.
 - [x] Favorites/Seen movies history
 - [x] Player features : Play, Pause, Stop, Volume, Fullscreen
 - [x] Settings features : Language (English/French), Broadband limit
-- [x] Automatic incremental updating on startup (updates stored in Azure Storage)
 
 ## Chatroom
 Drop in on the Gitter room - https://gitter.im/bbougot/Popcorn - if you want to ask a question or discuss something.
