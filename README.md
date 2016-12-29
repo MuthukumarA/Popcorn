@@ -1,7 +1,5 @@
 # Popcorn
 
-[![Join the chat at https://gitter.im/bbougot/Popcorn](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bbougot/Popcorn?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 An application which aims to provide a simple interface to watch any movie.
 
 ![Screenshot1](https://cloud.githubusercontent.com/assets/8962802/9643432/2d85a3a4-51c2-11e5-87bf-55ee81d5cc7a.jpg)
@@ -33,7 +31,7 @@ An application which aims to provide a simple interface to watch any movie.
 * Movies' data from [TMDb](http://tmdb.org)
 
 ## Supported platforms
-At this time, only Windows 7+ is supported (Windows 7, 8, 8.1, 10 | 32/64 Bits).
+At this time, only Windows 7+ is supported (Windows 7, 8, 8.1, 10 | 64 Bits).
 
 ## Can I help you?
 Of course yes! Any pull-request will be considered.
@@ -56,15 +54,6 @@ Of course yes! Any pull-request will be considered.
 - [x] Favorites/Seen movies history
 - [x] Player features : Play, Pause, Stop, Volume, Fullscreen
 - [x] Settings features : Language (English/French), Broadband limit
-
-## Chatroom
-Drop in on the Gitter room - https://gitter.im/bbougot/Popcorn - if you want to ask a question or discuss something.
-
-## Continuous integration
-CI is hosted on [Appveyor](https://ci.appveyor.com/project/bbougot/popcorn).
-
-## Visual Studio
-The solution is built using Visual Studio 2015.
 
 ## Installer
 Download full installer [here](https://github.com/bbougot/Popcorn/releases/download/1.3.0/Setup.exe)
