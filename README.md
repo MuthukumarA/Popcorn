@@ -20,7 +20,6 @@ An application which aims to provide a simple interface to watch any movie.
 * Libtorrent wrapper: [libtorrent-net](https://github.com/vktr/libtorrent-net)
 * ORM: [Entity Framework](https://github.com/aspnet/EntityFramework)
 * Database storage: [SqlServer Compact](https://www.nuget.org/packages/Microsoft.SqlServer.Compact/)
-* Update management (updates stored on Azure Storage): [Squirrel.Windows](https://github.com/Squirrel/Squirrel.Windows)
 * JSON Deserialization: [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)
 * REST management: [RestSharp](https://github.com/restsharp/RestSharp)
 * Logging: [NLog](https://github.com/NLog/NLog)
@@ -68,4 +67,4 @@ CI is hosted on [Appveyor](https://ci.appveyor.com/project/bbougot/popcorn).
 The solution is built using Visual Studio 2015.
 
 ## Installer
-Download full installer [here](https://github.com/bbougot/Popcorn/releases/download/1.1.0/Setup.exe)
+Download full installer [here](https://github.com/bbougot/Popcorn/releases/download/1.3.0/Setup.exe)
