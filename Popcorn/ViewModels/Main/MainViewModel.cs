@@ -411,9 +411,6 @@ namespace Popcorn.ViewModels.Main
             InitializeAsyncCommand = new RelayCommand(async () =>
             {
                 await LoadTabsAsync();
-#if !DEBUG
-                await StartUpdateProcessAsync();
-#endif
             });
         }
 
@@ -498,86 +495,6 @@ namespace Popcorn.ViewModels.Main
                 if (searchMovieTab != null)
                     await searchMovieTab.SearchMoviesAsync(criteria);
             }
-        }
-
-        /// <summary>
-        /// Look for update then download and apply if any
-        /// </summary>
-        private async Task StartUpdateProcessAsync()
-        {
-            var watchStart = Stopwatch.StartNew();
-
-            Logger.Info(
-                "Looking for updates...");
-            try
-            {
-                var updateInfo = await _updateManager.CheckForUpdate();
-                if (updateInfo == null)
-                {
-                    Logger.Error(
-                        "Problem while trying to check new updates.");
-                    return;
-                }
-
-                if (updateInfo.ReleasesToApply.Any())
-                {
-                    Logger.Info(
-                        $"A new update has been found!\n Currently installed version: {updateInfo.CurrentlyInstalledVersion?.Version?.Version.Major}.{updateInfo.CurrentlyInstalledVersion?.Version?.Version.Minor}.{updateInfo.CurrentlyInstalledVersion?.Version?.Version.Build} - New update: {updateInfo.FutureReleaseEntry?.Version?.Version.Major}.{updateInfo.FutureReleaseEntry?.Version?.Version.Minor}.{updateInfo.FutureReleaseEntry?.Version?.Version.Build}");
-
-                    await _updateManager.DownloadReleases(updateInfo.ReleasesToApply, x => Logger.Info(
-                        $"Downloading new update... {x}%"));
-
-                    await _updateManager.ApplyReleases(updateInfo, x => Logger.Info(
-                        $"Applying... {x}%"));
-
-                    Logger.Info(
-                        "A new update has been applied.");
-
-                    var releaseInfos = string.Empty;
-                    foreach (var releaseInfo in updateInfo.FetchReleaseNotes())
-                    {
-                        var info = releaseInfo.Value;
-
-                        var pFrom = info.IndexOf("<p>", StringComparison.InvariantCulture) + "<p>".Length;
-                        var pTo = info.LastIndexOf("</p>", StringComparison.InvariantCulture);
-
-                        releaseInfos = string.Concat(releaseInfos, info.Substring(pFrom, pTo - pFrom),
-                            Environment.NewLine);
-                    }
-
-                    var updateDialog =
-                        new UpdateDialog(
-                            new UpdateDialogSettings(
-                                LocalizationProviderHelper.GetLocalizedValue<string>("NewUpdateLabel"),
-                                LocalizationProviderHelper.GetLocalizedValue<string>("NewUpdateDescriptionLabel"),
-                                releaseInfos));
-                    await _dialogCoordinator.ShowMetroDialogAsync(this, updateDialog);
-                    var updateDialogResult = await updateDialog.WaitForButtonPressAsync();
-                    await _dialogCoordinator.HideMetroDialogAsync(this, updateDialog);
-
-                    if (!updateDialogResult.Restart) return;
-
-                    Logger.Info(
-                        "Restarting...");
-                    UpdateManager.RestartApp();
-                }
-                else
-                {
-                    Logger.Info(
-                        "No update available.");
-                    return;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(
-                    $"Something went wrong when trying to update app. {ex.Message}");
-            }
-
-            watchStart.Stop();
-            var elapsedStartMs = watchStart.ElapsedMilliseconds;
-            Logger.Info(
-                "Finished looking for updates.", elapsedStartMs);
         }
 
         /// <summary>
