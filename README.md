@@ -14,8 +14,8 @@ An application which aims to provide a simple interface to watch any movie.
 ### Dependencies
 * MVVM framework: [MVVM Light](https://mvvmlight.codeplex.com) 
 * UI framework: [MahApps](https://github.com/MahApps/MahApps.Metro)
-* Media Player: [FFME](https://github.com/unosquare/ffmediaelement)
-* Libtorrent wrapper: [libtorrent-net](https://github.com/vktr/libtorrent-net)
+* Media Player: [Meta.Vlc](https://github.com/higankanshi/Meta.Vlc)
+* libtorrent wrapper: [Libtorrent.NET](https://github.com/bbougot/Libtorrent.NET)
 * ORM: [Entity Framework](https://github.com/aspnet/EntityFramework)
 * Database storage: [SqlServer Compact](https://www.nuget.org/packages/Microsoft.SqlServer.Compact/)
 * JSON Deserialization: [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)
@@ -56,4 +56,4 @@ Of course yes! Any pull-request will be considered.
 - [x] Settings features : Language (English/French), Broadband limit
 
 ## Installer
-Download full installer [here](https://github.com/bbougot/Popcorn/releases/download/1.3.0/Setup.exe)
+Download full installer [here](https://github.com/bbougot/Popcorn/releases/download/1.4.0/Setup.exe)

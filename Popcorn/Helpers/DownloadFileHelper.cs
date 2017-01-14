@@ -58,14 +58,18 @@ namespace Popcorn.Helpers
                 if (!string.IsNullOrEmpty(direcory) && !Directory.Exists(direcory))
                     Directory.CreateDirectory(direcory);
 
-                using (var client = new NoKeepAliveWebClient())
+                // Sometimes YTS requires an authentication to access movies. Here is an already authenticated cookie valid until December 2017
+                var cookieJar = new CookieContainer();
+                cookieJar.Add(new Cookie("PHPSESSID", "ncrmefe4s79la9d2mba0n538o6", "/", "yts.ag"));
+                cookieJar.Add(new Cookie("__cfduid", "d6c81b283d74b436fec66f02bcb99c04d1481020053", "/", ".yts.ag"));
+                cookieJar.Add(new Cookie("bgb2", "1", "/", "yts.ag"));
+                cookieJar.Add(new Cookie("uhh", "60a8c98fd72e7a79b731f1ea09a5d09d", "/", ".yts.ag"));
+                cookieJar.Add(new Cookie("uid", "2188423", "/", ".yts.ag"));
+                using (var client = new CookieAwareWebClient(cookieJar))
                 {
                     if (progress != null)
                         client.DownloadProgressChanged +=
-                            delegate(object sender, DownloadProgressChangedEventArgs e)
-                            {
-                                progress.Report(e.BytesReceived/e.TotalBytesToReceive);
-                            };
+                            (sender, e) => progress.Report(e.BytesReceived/e.TotalBytesToReceive);
 
                     TimerCallback timerCallback = c =>
                     {

@@ -130,12 +130,24 @@
       <HintPath>..\packages\squirrel.windows.1.5.1\lib\Net45\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ltnet, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="ltnet, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libtorrent\ltnet.dll</HintPath>
+      <HintPath>..\libs\ltnet.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=1.4.0.42, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.4.0\lib\net45\MahApps.Metro.dll</HintPath>
+    <Reference Include="MahApps.Metro, Version=1.4.1.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.4.1\lib\net45\MahApps.Metro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Meta.Vlc, Version=16.5.1.0, Culture=neutral, PublicKeyToken=721a8c5379fa4056, processorArchitecture=x86">
+      <HintPath>..\packages\Meta.Vlc.16.11.19\lib\net45\x86\Meta.Vlc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Meta.Vlc.Wpf, Version=16.5.1.0, Culture=neutral, PublicKeyToken=721a8c5379fa4056, processorArchitecture=x86">
+      <HintPath>..\packages\Meta.Vlc.Wpf.16.11.19\lib\net45\x86\Meta.Vlc.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.2.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
@@ -224,7 +236,7 @@
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.4.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.1.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
@@ -294,6 +306,9 @@
     <Compile Include="Entity\Movie\MovieFull.cs" />
     <Compile Include="Entity\Movie\MovieHistory.cs" />
     <Compile Include="Entity\Movie\Torrent.cs" />
+    <Compile Include="Helpers\CookieAwareContainer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Messaging\ChangeFavoriteMovieMessage.cs" />
     <Compile Include="Messaging\ChangeHasBeenSeenMovieMessage.cs" />
     <Compile Include="Messaging\WindowStateChangeMessage.cs" />
@@ -317,9 +332,6 @@
     <Compile Include="Helpers\DownloadFileHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\LocalizationProviderHelper.cs" />
-    <Compile Include="Helpers\NoKeepAliveWebClient.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Messaging\ChangeLanguageMessage.cs" />
     <Compile Include="Messaging\ManageExceptionMessage.cs" />
     <Compile Include="Messaging\DownloadMovieMessage.cs" />
@@ -349,6 +361,8 @@
     <Compile Include="Services\History\IMovieHistoryService.cs" />
     <Compile Include="Services\History\MovieHistoryService.cs" />
     <Compile Include="Services\Language\ILanguageService.cs" />
+    <Compile Include="Services\Logging\ILoggingService.cs" />
+    <Compile Include="Services\Logging\LoggingService.cs" />
     <Compile Include="Services\Movie\IMovieService.cs" />
     <Compile Include="Services\Movie\MovieService.cs" />
     <Compile Include="Models\Torrent\Torrent.cs" />
@@ -1365,12 +1379,6 @@
   <ItemGroup>
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Unosquare.FFmpegMediaElement\Unosquare.FFmpegMediaElement.csproj">
-      <Project>{f12ae8fb-09ad-475d-81c6-d5f2f9cf91e8}</Project>
-      <Name>Unosquare.FFmpegMediaElement</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -1380,7 +1388,8 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>
+    <PostBuildEvent>	if not exist "$(TargetDir)libvlc" md "$(TargetDir)libvlc"
+    xcopy /s /y "$(SolutionDir)packages\Meta.Vlc.Lib.16.05.01\content\LibVlc\*.*" "$(TargetDir)libvlc"
     if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
     xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
     if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"

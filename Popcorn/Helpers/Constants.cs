@@ -15,6 +15,11 @@ namespace Popcorn.Helpers
         }
 
         /// <summary>
+        /// Application Insights Instrumentation Key
+        /// </summary>
+        public const string ApplicationInsightsInstrumentationKey = "93a9d8fc-f906-40c8-8fe8-7b858e66f602";
+        
+        /// <summary>
         /// Localize flags' images resources
         /// </summary>
         public const string FlagImagesDirectory = "pack://application:,,,/Popcorn;component/resources/images/flags/";

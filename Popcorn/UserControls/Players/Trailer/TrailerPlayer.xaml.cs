@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -19,8 +21,8 @@ namespace Popcorn.UserControls.Players.Trailer
         /// <summary>
         /// Identifies the <see cref="Volume" /> dependency property.
         /// </summary>
-        internal static readonly DependencyProperty VolumeProperty = DependencyProperty.Register("Volume", typeof (double),
-            typeof (TrailerPlayer), new PropertyMetadata(0.5, OnVolumeChanged));
+        internal static readonly DependencyProperty VolumeProperty = DependencyProperty.Register("Volume", typeof (int),
+            typeof (TrailerPlayer), new PropertyMetadata(100, OnVolumeChanged));
 
         private bool _isMouseActivityCaptured;
 
@@ -30,16 +32,15 @@ namespace Popcorn.UserControls.Players.Trailer
         public TrailerPlayer()
         {
             InitializeComponent();
-
             Loaded += OnLoaded;
         }
 
         /// <summary>
         /// Get or set the trailer volume
         /// </summary>
-        public double Volume
+        public int Volume
         {
-            get { return (double) GetValue(VolumeProperty); }
+            get { return (int) GetValue(VolumeProperty); }
 
             set { SetValue(VolumeProperty, value); }
         }
@@ -78,9 +79,10 @@ namespace Popcorn.UserControls.Players.Trailer
             InputManager.Current.PreProcessInput += OnActivity;
 
             vm.StoppedPlayingMedia += OnStoppedPlayingMedia;
-            Player.MediaEnded += MediaPlayerEndReached;
+            
+            Player.VlcMediaPlayer.EndReached += MediaPlayerEndReached;
 
-            Player.Source = vm.Trailer.Uri;
+            Player.LoadMedia(vm.Trailer.Uri);
             PlayMedia();
         }
 
@@ -95,7 +97,7 @@ namespace Popcorn.UserControls.Players.Trailer
             if (moviePlayer == null)
                 return;
 
-            var newVolume = (double) e.NewValue;
+            var newVolume = (int)e.NewValue;
             moviePlayer.ChangeMediaVolume(newVolume);
         }
 
@@ -103,7 +105,7 @@ namespace Popcorn.UserControls.Players.Trailer
         /// Change the trailer's volume
         /// </summary>
         /// <param name="newValue">New volume value</param>
-        private void ChangeMediaVolume(double newValue) => Player.Volume = newValue;
+        private void ChangeMediaVolume(int newValue) => Player.Volume = newValue;
 
         /// <summary>
         /// When user uses the mousewheel, update the volume
@@ -112,8 +114,8 @@ namespace Popcorn.UserControls.Players.Trailer
         /// <param name="e">MouseWheelEventArgs</param>
         private void MouseWheelMediaPlayer(object sender, MouseWheelEventArgs e)
         {
-            if ((Volume <= 1 && e.Delta > 0) || (Volume >= 0 && e.Delta < 0))
-                Volume += (e.Delta > 0) ? 0.1 : -0.1;
+            if ((Volume <= 190 && e.Delta > 0) || (Volume >= 10 && e.Delta < 0))
+                Volume += (e.Delta > 0) ? 10 : -10;
         }
 
         /// <summary>
@@ -121,14 +123,15 @@ namespace Popcorn.UserControls.Players.Trailer
         /// </summary>
         /// <param name="sender">Sender object</param>
         /// <param name="e">EventArgs</param>
-        private void MediaPlayerEndReached(object sender, EventArgs e) => DispatcherHelper.CheckBeginInvokeOnUI(() =>
-        {
-            var vm = DataContext as TrailerPlayerViewModel;
-            if (vm == null)
-                return;
+        private void MediaPlayerEndReached(object sender, Meta.Vlc.ObjectEventArgs<Meta.Vlc.Interop.Media.MediaState> e)
+                    => DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        var vm = DataContext as TrailerPlayerViewModel;
+                        if (vm == null)
+                            return;
 
-            vm.StopPlayingMediaCommand.Execute(null);
-        });
+                        vm.StopPlayingMediaCommand.Execute(null);
+                    });
 
         /// <summary>
         /// Play the trailer
@@ -170,8 +173,8 @@ namespace Popcorn.UserControls.Players.Trailer
         {
             if ((Player == null) || (UserIsDraggingMediaPlayerSlider)) return;
             MediaPlayerSliderProgress.Minimum = 0;
-            MediaPlayerSliderProgress.Maximum = Player.NaturalDuration;
-            MediaPlayerSliderProgress.Value = decimal.ToDouble(Player.Position);
+            MediaPlayerSliderProgress.Maximum = Player.Length.TotalSeconds;
+            MediaPlayerSliderProgress.Value = Player.Time.TotalSeconds;
         }
 
         /// <summary>
@@ -221,12 +224,10 @@ namespace Popcorn.UserControls.Players.Trailer
         /// </summary>
         /// <param name="sender">Sender object</param>
         /// <param name="e">DragCompletedEventArgs</param>
-        private async void MediaSliderProgressDragCompleted(object sender, DragCompletedEventArgs e)
+        private void MediaSliderProgressDragCompleted(object sender, DragCompletedEventArgs e)
         {
             UserIsDraggingMediaPlayerSlider = false;
-            Player.Position = (decimal)MediaPlayerSliderProgress.Value;
-            await Task.Delay(1000);
-            PlayMedia();
+            Player.Time = TimeSpan.FromSeconds(MediaPlayerSliderProgress.Value);
         }
 
         /// <summary>
@@ -239,7 +240,7 @@ namespace Popcorn.UserControls.Players.Trailer
             MoviePlayerTextProgressStatus.Text =
                 TimeSpan.FromSeconds(MediaPlayerSliderProgress.Value)
                     .ToString(@"hh\:mm\:ss", CultureInfo.CurrentCulture) + " / " +
-                TimeSpan.FromSeconds(Player.NaturalDuration)
+                TimeSpan.FromSeconds(Player.Length.TotalSeconds)
                     .ToString(@"hh\:mm\:ss", CultureInfo.CurrentCulture);
         }
 
@@ -350,10 +351,9 @@ namespace Popcorn.UserControls.Players.Trailer
 
             InputManager.Current.PreProcessInput -= OnActivity;
 
-            Player.MediaEnded -= MediaPlayerEndReached;
+            Player.VlcMediaPlayer.EndReached -= MediaPlayerEndReached;
             MediaPlayerIsPlaying = false;
             Player.Stop();
-            Player.Close();
             Player.Dispose();
 
             var vm = DataContext as TrailerPlayerViewModel;

@@ -4,6 +4,7 @@ using Microsoft.Practices.ServiceLocation;
 using Popcorn.Models.ApplicationState;
 using Popcorn.Services.History;
 using Popcorn.Services.Language;
+using Popcorn.Services.Logging;
 using Popcorn.Services.Movie;
 using Popcorn.Services.Settings;
 using Popcorn.ViewModels.DownloadMovie;
@@ -29,6 +30,7 @@ namespace Popcorn.ViewModels
         static ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
+            SimpleIoc.Default.Register<ILoggingService, LoggingService>();
             SimpleIoc.Default.Register<ISettingsService, SettingsService>();
             SimpleIoc.Default.Register<IMovieService, MovieService>();
             SimpleIoc.Default.Register<ILanguageService, LanguageService>();

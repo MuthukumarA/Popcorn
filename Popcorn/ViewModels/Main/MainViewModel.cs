@@ -18,6 +18,7 @@ using Popcorn.Helpers;
 using Popcorn.Messaging;
 using Popcorn.Models.ApplicationState;
 using Popcorn.Services.History;
+using Popcorn.Services.Logging;
 using Popcorn.Services.Movie;
 using Popcorn.ViewModels.Genres;
 using Popcorn.ViewModels.Players.Movie;
@@ -50,6 +51,11 @@ namespace Popcorn.ViewModels.Main
         /// Used to interact with movies
         /// </summary>
         private readonly IMovieService _movieService;
+
+        /// <summary>
+        /// Used to log
+        /// </summary>
+        private readonly ILoggingService _loggingService;
 
         /// <summary>
         /// Application state
@@ -97,30 +103,25 @@ namespace Popcorn.ViewModels.Main
         private ObservableCollection<TabsViewModel> _tabs = new ObservableCollection<TabsViewModel>();
 
         /// <summary>
-        /// Used to update application
-        /// </summary>
-        private readonly UpdateManager _updateManager;
-
-        /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         /// <param name="genresViewModel">Instance of GenresViewModel</param>
         /// <param name="movieService">Instance of MovieService</param>
         /// <param name="movieHistoryService">Instance of MovieHistoryService</param>
         /// <param name="applicationState">Instance of ApplicationState</param>
+        /// <param name="loggingService">Instance of LogginService</param>
         public MainViewModel(IGenresViewModel genresViewModel, IMovieService movieService,
-            IMovieHistoryService movieHistoryService, IApplicationState applicationState)
+            IMovieHistoryService movieHistoryService, IApplicationState applicationState, ILoggingService loggingService)
         {
             _dialogCoordinator = DialogCoordinator.Instance;
             _movieService = movieService;
             _movieHistoryService = movieHistoryService;
+            _loggingService = loggingService;
             ApplicationState = applicationState;
             GenresViewModel = genresViewModel;
             RegisterMessages();
             RegisterCommands();
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
-            AppDomain.CurrentDomain.ProcessExit += (sender, args) => _updateManager.Dispose();
-            _updateManager = new UpdateManager(Constants.UpdateServerUrl, Constants.ApplicationName);
         }
 
         /// <summary>
@@ -256,6 +257,7 @@ namespace Popcorn.ViewModels.Main
                 await tab.LoadMoviesAsync();
 
             await GenresViewModel.LoadGenresAsync();
+            _loggingService.TrackTrace("Loaded");
         }
 
         /// <summary>

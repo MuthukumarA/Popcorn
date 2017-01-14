@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
+using Meta.Vlc.Wpf;
 using Popcorn.Events;
 using Popcorn.Helpers;
 using Popcorn.ViewModels.Main;
@@ -23,6 +25,12 @@ namespace Popcorn.Windows
                 return;
 
             vm.WindowStateChanged += OnWindowStateChanged;
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            ApiManager.ReleaseAll();
+            base.OnClosing(e);
         }
 
         /// <summary>
