@@ -31,14 +31,13 @@ An application which aims to provide a simple interface to watch any movie.
 * Movies' data from [TMDb](http://tmdb.org)
 
 ## Supported platforms
-At this time, only Windows 7+ is supported (Windows 7, 8, 8.1, 10 | 64 Bits).
+At this time, only Windows 7+ is supported (Windows 7, 8, 8.1, 10).
 
 ## Can I help you?
 Of course yes! Any pull-request will be considered.
 
 ## Tasks
 - [ ] Fork the repo and make it universal (UWP)
-- [ ] Subtitles support
 - [ ] Seekable movie stream
 - [ ] In-memory movie downloading
 - [ ] Add series/anime
@@ -46,6 +45,7 @@ Of course yes! Any pull-request will be considered.
 - [ ] VPN
 - [ ] DLNA broadcasting
 - [ ] User account with movie chatrooms (like Jabbr)
+- [x] Subtitles support
 - [x] List movies (Popular, Greatest, Recent)
 - [x] Search (Movie Title/IMDb Code, Actor Name/IMDb Code, Director Name/IMDb Code)
 - [x] Trailer support
