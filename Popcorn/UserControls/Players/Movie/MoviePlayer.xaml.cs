@@ -83,10 +83,15 @@ namespace Popcorn.UserControls.Players.Movie
             
             Player.VlcMediaPlayer.EndReached += MediaPlayerEndReached;
 
-            //if (!string.IsNullOrEmpty(vm.Movie.SelectedSubtitle?.FilePath))
-            //TODO: subtitles
+            if (!string.IsNullOrEmpty(vm.Movie.SelectedSubtitle?.FilePath))
+            {
+                Player.LoadMediaWithOptions(vm.Movie.FilePath, $@":sub-file={vm.Movie.SelectedSubtitle?.FilePath}");
+            }
+            else
+            {
+                Player.LoadMedia(vm.Movie.FilePath);
+            }
 
-            Player.LoadMedia(vm.Movie.FilePath);
             PlayMedia();
         }
 
