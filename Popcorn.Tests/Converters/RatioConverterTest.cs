@@ -10,7 +10,7 @@ namespace Popcorn.Tests.Converters
     {
         private RatioConverter _converter;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void InitializeConverter()
         {
             _converter = new RatioConverter();

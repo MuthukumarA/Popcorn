@@ -9,7 +9,7 @@ namespace Popcorn.Tests.Converters
     {
         private BoolToVisibilityConverter _converter;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void InitializeConverter()
         {
             _converter = new BoolToVisibilityConverter();

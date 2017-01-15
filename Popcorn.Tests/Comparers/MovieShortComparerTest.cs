@@ -10,7 +10,7 @@ namespace Popcorn.Tests.Comparers
     {
         private MovieShortComparer _comparer;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void InitializeConverter()
         {
             _comparer = new MovieShortComparer();

@@ -8,7 +8,7 @@ namespace Popcorn.Tests.Converters
     {
         private NullAsBoolConverter _converter;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void InitializeConverter()
         {
             _converter = new NullAsBoolConverter();

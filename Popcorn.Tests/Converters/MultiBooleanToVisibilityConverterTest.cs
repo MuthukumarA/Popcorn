@@ -9,7 +9,7 @@ namespace Popcorn.Tests.Converters
     {
         private MultiBooleanToVisibilityConverter _converter;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void InitializeConverter()
         {
             _converter = new MultiBooleanToVisibilityConverter();

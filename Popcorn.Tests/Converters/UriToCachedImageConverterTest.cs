@@ -9,7 +9,7 @@ namespace Popcorn.Tests.Converters
     {
         private UriToCachedImageConverter _converter;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void InitializeConverter()
         {
             _converter = new UriToCachedImageConverter();

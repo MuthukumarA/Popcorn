@@ -8,7 +8,7 @@ namespace Popcorn.Tests.Converters
     {
         private MultiBooleanToBoolConverter _converter;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void InitializeConverter()
         {
             _converter = new MultiBooleanToBoolConverter();
