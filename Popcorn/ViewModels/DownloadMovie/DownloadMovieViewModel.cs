@@ -173,6 +173,8 @@ namespace Popcorn.ViewModels.DownloadMovie
         /// <param name="movie">The movie to load</param>
         public void LoadMovie(MovieFull movie)
         {
+            MovieDownloadProgress = 0d;
+            MovieDownloadRate = 0d;
             Movie = movie;
             MovieSettings.LoadMovie(Movie);
         }

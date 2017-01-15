@@ -130,7 +130,7 @@ namespace Popcorn.Services.Movie
             request.AddParameter("page", page);
             if (genre != null) request.AddParameter("genre", genre.EnglishName);
             request.AddParameter("minimum_rating", ratingFilter);
-            request.AddParameter("sort_by", "peers");
+            request.AddParameter("sort_by", "like_count");
 
             try
             {
@@ -264,7 +264,7 @@ namespace Popcorn.Services.Movie
             request.AddParameter("page", page);
             if (genre != null) request.AddParameter("genre", genre.EnglishName);
             request.AddParameter("minimum_rating", ratingFilter);
-            request.AddParameter("sort_by", "year");
+            request.AddParameter("sort_by", "seeds");
 
             try
             {
