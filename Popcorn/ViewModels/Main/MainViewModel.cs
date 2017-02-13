@@ -296,6 +296,8 @@ namespace Popcorn.ViewModels.Main
 
             Messenger.Default.Register<SearchMovieMessage>(this,
                 async message => await SearchMovies(message.Filter));
+
+            Messenger.Default.Register<UnhandledExceptionMessage>(this, message => ManageException(message.Exception));
         }
 
         /// <summary>
@@ -404,7 +406,6 @@ namespace Popcorn.ViewModels.Main
             InitializeAsyncCommand = new RelayCommand(async () =>
             {
                 await LoadTabsAsync();
-
 #if !DEBUG
                 await StartUpdateProcessAsync();
 #endif
@@ -503,7 +504,10 @@ namespace Popcorn.ViewModels.Main
         {
             var ex = e.ExceptionObject as Exception;
             if (ex != null)
-                ManageException(ex);
+            {
+                Logger.Fatal(ex);
+                ManageException(new Exception(LocalizationProviderHelper.GetLocalizedValue<string>("FatalError")));
+            }
         }
 
         /// <summary>

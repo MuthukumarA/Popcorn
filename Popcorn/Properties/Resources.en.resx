@@ -276,4 +276,7 @@
   <data name="RatingLabel" xml:space="preserve">
     <value>Rating</value>
   </data>
+  <data name="FatalError" xml:space="preserve">
+    <value>A critical error has occured. You should restart the app immediately.</value>
+  </data>
 </root>

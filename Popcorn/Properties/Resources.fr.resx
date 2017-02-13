@@ -276,4 +276,7 @@
   <data name="RatingLabel" xml:space="preserve">
     <value>Note</value>
   </data>
+  <data name="FatalError" xml:space="preserve">
+    <value>Une erreur fatale vient de se produire. Vous devriez relancer l'application immédiatement.</value>
+  </data>
 </root>

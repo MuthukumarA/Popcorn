@@ -27,6 +27,10 @@ namespace Popcorn.Windows
             vm.WindowStateChanged += OnWindowStateChanged;
         }
 
+        /// <summary>
+        /// On window closing, release VLC instance
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnClosing(CancelEventArgs e)
         {
             ApiManager.ReleaseAll();

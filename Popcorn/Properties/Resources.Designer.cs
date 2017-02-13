@@ -196,6 +196,15 @@ namespace Popcorn.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
+        public static string FataError {
+            get {
+                return ResourceManager.GetString("FataError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Favorites.
         /// </summary>
         public static string FavoritesTitleTab {

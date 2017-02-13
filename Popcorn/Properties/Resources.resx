@@ -276,4 +276,7 @@
   <data name="RatingLabel" xml:space="preserve">
     <value>Rating</value>
   </data>
+  <data name="FataError" xml:space="preserve">
+    <value />
+  </data>
 </root>
