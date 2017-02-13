@@ -12,7 +12,7 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
-            <converters:UriToCachedImageConverter x:Key="UriToCachedImageConverter" />
+            <converters:StringToUriConverter x:Key="UriToCachedImageConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>

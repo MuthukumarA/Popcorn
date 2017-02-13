@@ -52,9 +52,9 @@ namespace Popcorn
         /// Execute when app is uninstalling
         /// </summary>
         /// <param name="version"><see cref="Version"/> version</param>
-        private static void OnAppUninstall(Version version)
+        private static async void OnAppUninstall(Version version)
         {
-            using (var manager = new UpdateManager(Constants.UpdateServerUrl))
+            using (var manager = await UpdateManager.GitHubUpdateManager(Constants.GithubRepository))
             {
                 manager.RemoveShortcutsForExecutable("Popcorn.exe", ShortcutLocation.Desktop);
                 manager.RemoveShortcutsForExecutable("Popcorn.exe", ShortcutLocation.StartMenu);
@@ -68,16 +68,16 @@ namespace Popcorn
         /// Execute when app is updating
         /// </summary>
         /// <param name="version"><see cref="Version"/> version</param>
-        private static void OnAppUpdate(Version version)
+        private static async void OnAppUpdate(Version version)
         {
-            using (var manager = new UpdateManager(Constants.UpdateServerUrl))
+            using (var manager = await UpdateManager.GitHubUpdateManager(Constants.GithubRepository))
             {
                 manager.CreateShortcutsForExecutable("Popcorn.exe", ShortcutLocation.Desktop, true);
                 manager.CreateShortcutsForExecutable("Popcorn.exe", ShortcutLocation.StartMenu, true);
                 manager.CreateShortcutsForExecutable("Popcorn.exe", ShortcutLocation.AppRoot, true);
 
                 manager.RemoveUninstallerRegistryEntry();
-                manager.CreateUninstallerRegistryEntry();
+                await manager.CreateUninstallerRegistryEntry();
             }
         }
 
@@ -92,9 +92,9 @@ namespace Popcorn
         /// Execute when app is installing
         /// </summary>
         /// <param name="version"><see cref="Version"/> version</param>
-        private static void OnInitialInstall(Version version)
+        private static async void OnInitialInstall(Version version)
         {
-            using (var manager = new UpdateManager(Constants.UpdateServerUrl))
+            using (var manager = await UpdateManager.GitHubUpdateManager(Constants.GithubRepository))
             {
                 manager.CreateShortcutForThisExe();
 
@@ -102,7 +102,7 @@ namespace Popcorn
                 manager.CreateShortcutsForExecutable("Popcorn.exe", ShortcutLocation.StartMenu, false);
                 manager.CreateShortcutsForExecutable("Popcorn.exe", ShortcutLocation.AppRoot, false);
 
-                manager.CreateUninstallerRegistryEntry();
+                await manager.CreateUninstallerRegistryEntry();
             }
         }
     }

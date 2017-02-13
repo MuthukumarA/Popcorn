@@ -1,6 +1,7 @@
 ﻿using System.Resources;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Popcorn.Helpers;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -29,7 +30,7 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.4.0.0")]
-[assembly: AssemblyFileVersion("1.4.0.0")]
+[assembly: AssemblyVersion(Constants.AppVersion)]
+[assembly: AssemblyFileVersion(Constants.AppVersion)]
 [assembly: NeutralResourcesLanguage("en")]
 [assembly: AssemblyMetadata("SquirrelAwareVersion", "1")]

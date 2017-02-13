@@ -7,17 +7,20 @@ namespace Popcorn.Helpers
     /// </summary>
     public static class Constants
     {
+        /// <summary>
+        /// App version
+        /// </summary>
+        public const string AppVersion = "1.5.0.0";
+
+        /// <summary>
+        /// Youtube quality
+        /// </summary>
         public enum YoutubeStreamingQuality
         {
             Low = 0,
             Medium = 1,
             High = 2
         }
-
-        /// <summary>
-        /// Application Insights Instrumentation Key
-        /// </summary>
-        public const string ApplicationInsightsInstrumentationKey = "93a9d8fc-f906-40c8-8fe8-7b858e66f602";
         
         /// <summary>
         /// Localize flags' images resources
@@ -77,12 +80,7 @@ namespace Popcorn.Helpers
         /// <summary>
         /// Url of the server updates
         /// </summary>
-        public const string UpdateServerUrl = "https://popcornreleases.blob.core.windows.net/releases";
-
-        /// <summary>
-        /// Name of the application
-        /// </summary>
-        public const string ApplicationName = "Popcorn";
+        public const string GithubRepository = "https://github.com/bbougot/Popcorn";
 
         /// <summary>
         /// Directory of covers images
