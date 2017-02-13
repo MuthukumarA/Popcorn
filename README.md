@@ -56,4 +56,4 @@ Of course yes! Any pull-request will be considered.
 - [x] Settings features : Language (English/French), Broadband limit
 
 ## Installer
-Download full installer [here](https://github.com/bbougot/Popcorn/releases/download/1.4.0/Setup.exe)
+Download full installer [here](https://github.com/bbougot/Popcorn/releases/download/1.5.0/Setup.exe)
