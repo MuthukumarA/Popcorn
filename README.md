@@ -37,12 +37,9 @@ At this time, only Windows 7+ is supported (Windows 7, 8, 8.1, 10).
 Of course yes! Any pull-request will be considered.
 
 ## Tasks
-- [ ] Fork the repo and make it universal (UWP)
 - [ ] Seekable movie stream
-- [ ] In-memory movie downloading
 - [ ] Add series/anime
 - [ ] Add cast page (actor, director,...)
-- [ ] VPN
 - [ ] DLNA broadcasting
 - [ ] User account with movie chatrooms (like Jabbr)
 - [x] Subtitles support
